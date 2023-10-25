@@ -1,0 +1,30 @@
+
+## DB config
+spring:
+  application:
+    name: storage-service
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+
+## folder config
+storage:
+  path: ${STORAGE_BASE_PATH:/home/vitalii/Projects/CloudApp/storage-service/storage}
+
+## RabbitMQ config
+rabbitmq:
+  move-queue-name: ${RABBITMQ_MOVE_QUEUE_NAME:storage-move-queue}
+  exchange-name: ${RABBITMQ_EXCHANGE_NAME:storage-exchange}
+  routing-key: ${RABBITMQ_ROUTING_KEY:storage-move-queue}
+
+## OpenApi config
+springdoc:
+  packagesToScan: org.brain.storageservice.controller
+  pathsToMatch:
+    - /api/v1/storage/**
+
+
+
+
