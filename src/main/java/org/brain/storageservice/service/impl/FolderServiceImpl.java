@@ -8,7 +8,9 @@ import org.brain.storageservice.exceptionHandler.exceptions.FolderNotCreatedExce
 import org.brain.storageservice.exceptionHandler.exceptions.FolderNotDeletedException;
 import org.brain.storageservice.exceptionHandler.exceptions.FolderNotFoundException;
 import org.brain.storageservice.model.Folder;
+import org.brain.storageservice.model.MoveFolderTask;
 import org.brain.storageservice.repository.FolderRepository;
+import org.brain.storageservice.repository.FolderTaskRepository;
 import org.brain.storageservice.service.FolderService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.util.stream.Stream;
 @Transactional
 public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
+    private final FolderTaskRepository folderTaskRepository;
     private final BasePathProperties basePathProperties;
     private static final String FOLDER_NOT_CREATED_ERROR_MESSAGE = "Failed to create folder ";
     private static final String FOLDER_NOT_DELETE_ERROR_MESSAGE = "Failed to delete folder ";
@@ -94,6 +97,11 @@ public class FolderServiceImpl implements FolderService {
         return folder;
     }
 
+    @Override
+    public MoveFolderTask getMoveFolderTask(String id) {
+        return folderTaskRepository.findById(id).orElseThrow(FolderNotFoundException::new);
+    }
+
 
     private Path getFullPathByFolderId(Long folderId) {
         StringBuilder path = new StringBuilder();
@@ -121,16 +129,6 @@ public class FolderServiceImpl implements FolderService {
 
     private boolean checkIfFolderAlreadyExists(String folderName, Long parentFolderId) {
         return folderRepository.existsByParent_IdAndName(parentFolderId, folderName);
-    }
-
-    private void deleteFolderInFilesystem(Path path) {
-        try {
-            Files.delete(path);
-        } catch (IOException ex) {
-            log.error(FOLDER_NOT_DELETE_ERROR_MESSAGE + path);
-            log.debug(FOLDER_NOT_DELETE_ERROR_MESSAGE + path, ex);
-            throw new FolderNotDeletedException(FOLDER_NOT_DELETE_ERROR_MESSAGE + path);
-        }
     }
 
     //todo: delete folder with files

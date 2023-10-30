@@ -59,7 +59,7 @@ public class FolderController implements FolderApi {
     public ResponseEntity<MoveFolderTask> moveFolder(Long userId, MoveFolderRequest moveFolderRequest) {
         // todo check if folder exists with userId
         MoveFolderTask moveFolderTask = MoveFolderTask.builder()
-                .taskId(UUID.randomUUID().toString())
+                .id(UUID.randomUUID().toString())
                 .sourceFolderId(moveFolderRequest.getSourceFolderId())
                 .destinationFolderId(moveFolderRequest.getDestinationFolderId())
                 .userId(userId)
@@ -68,5 +68,10 @@ public class FolderController implements FolderApi {
         log.info("moveFolder - delegates work to work-storage");
         moveFolderProducer.sendMoveFolderMessage(moveFolderTask);
         return ResponseEntity.ok(moveFolderTask);
+    }
+
+    @Override
+    public ResponseEntity<MoveFolderTask> getFolderTask(Long userId, String taskId){
+        return ResponseEntity.ok(folderService.getMoveFolderTask(taskId));
     }
 }
