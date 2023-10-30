@@ -50,7 +50,7 @@ rabbitmq:
 ## Eureka
 eureka:
   client:
-    enabled: false
+    enabled: true
     service-url:
       defaultZone: ${EUREKA_URL:http://eureka-server:8761/eureka}
     fetch-registry: true
