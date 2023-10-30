@@ -1,7 +1,5 @@
 package org.brain.storageservice.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.brain.storageservice.config.RabbitQueueProperties;
@@ -16,16 +14,12 @@ import org.springframework.stereotype.Service;
 public class MoveFolderProducerImpl implements MoveFolderProducer {
     private final RabbitQueueProperties rabbitQueueProperties;
     private final RabbitTemplate rabbitTemplate;
-    ObjectMapper objectMapper = new ObjectMapper();
 
     public MoveFolderTask sendMoveFolderMessage(MoveFolderTask message) {
         log.info("Sending message to queue: {}", message);
         // convert message into string json
-        try {
-            rabbitTemplate.convertAndSend(rabbitQueueProperties.exchangeName(), rabbitQueueProperties.routingKey(), objectMapper.writeValueAsString(message));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        message.setStatus("PENDING");
+        rabbitTemplate.convertAndSend(rabbitQueueProperties.exchangeName(), rabbitQueueProperties.routingKey(), message);
         log.info("Message sent to queue: {}", message);
         return message;
     }

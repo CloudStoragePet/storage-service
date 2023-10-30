@@ -1,6 +1,8 @@
 package org.brain.storageservice.model;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
 @Builder
 @Getter
@@ -8,8 +10,10 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@RedisHash("MoveFolderTask")
 public class MoveFolderTask {
-    private String taskId;
+    @Id
+    private String id;
     private Long sourceFolderId;
     private Long destinationFolderId;
     private Long userId;

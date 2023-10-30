@@ -8,7 +8,10 @@ spring:
       ddl-auto: none
   flyway:
     enabled: true
-
+  data:
+    redis:
+      repositories:
+        enabled: false
 ## folder config
 storage:
   path: ${STORAGE_BASE_PATH:/home/vitalii/Projects/CloudApp/storage-service/storage}

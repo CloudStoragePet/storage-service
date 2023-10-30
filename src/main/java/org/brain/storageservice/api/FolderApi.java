@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.brain.storageservice.exceptionHandler.exceptions.ServiceException;
 import org.brain.storageservice.model.MoveFolderTask;
 import org.brain.storageservice.payload.request.FolderRequest;
 import org.brain.storageservice.payload.request.MoveFolderRequest;
@@ -65,5 +64,14 @@ public interface FolderApi {
                     @Content(schema = @Schema(implementation = MoveFolderTask.class), mediaType = "application/json")})})
     @PutMapping(value = "/folder/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<MoveFolderTask> moveFolder(@PathVariable Long userId, @Validated({ValidationUpdateFolder.class}) @RequestBody MoveFolderRequest moveFolderRequest)  throws ServiceException;
+    ResponseEntity<MoveFolderTask> moveFolder(@PathVariable Long userId, @Validated({ValidationUpdateFolder.class}) @RequestBody MoveFolderRequest moveFolderRequest) ;
+
+    @Operation(summary = "Get folder task")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = MoveFolderTask.class), mediaType = "application/json")})})
+    @GetMapping(value = "/folder/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<MoveFolderTask> getFolderTask(@PathVariable Long userId, @RequestParam String taskId);
+
 }
