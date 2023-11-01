@@ -35,14 +35,7 @@ public class FolderServiceImpl implements FolderService {
     private static final String FOLDER_ALREADY_EXISTS_WITH_NAME_ERROR_MESSAGE = "Folder already exists with name ";
     private static final String FOLDER_NOT_RENAMED_ERROR_MESSAGE = "Folder not renamed ";
 
-    /**
-     * Create a folder in the file system and in the database
-     *
-     * @param folderName     - name of the folder
-     * @param parentFolderId - id of the parent folder
-     * @param userId         - id of the user who creates the folder
-     * @return Folder - created folder
-     */
+
     @Override
     public Folder createFolder(String folderName, Long parentFolderId, Long userId) {
         // get whole path by parent folder id
@@ -96,6 +89,7 @@ public class FolderServiceImpl implements FolderService {
         renameFolderInFilesystem(getFullPathByFolderId(folderId), newFolderName);
         return folder;
     }
+
 
     @Override
     public MoveFolderTask getMoveFolderTask(String id) {
