@@ -23,9 +23,10 @@ spring:
   ## redis config
   data:
     redis:
-      host: localhost
+      host: redis
       port: 6379
       password: 1085
+      url: redis://redis:6379
 
 
 

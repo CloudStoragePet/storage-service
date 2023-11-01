@@ -50,6 +50,7 @@ To run the Storage service with Docker, follow these steps:
        --build-arg SPRING_DATA_REDIS_PASSWORD=<your_redis_password> \
        --build-arg EUREKA_URL=<your_eureka_url> \
        --build-arg SPRING_RABBITMQ_HOST=<your_rabbitmq_host> \
+       --build-arg SPRING_RABBITMQ_PORT=<your_rabbitmq_port> \
        --build-arg STORAGE_BASE_PATH=<your_base_folder_path> \
        --build-arg RABBITMQ_MOVE_QUEUE_NAME=<your_rabbitmq_move_queue_name> \
        --build-arg RABBITMQ_EXCHANGE_NAME=<your_rabbitmq_exchange_name> \
