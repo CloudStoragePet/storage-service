@@ -7,6 +7,7 @@ import org.brain.storageservice.config.BasePathProperties;
 import org.brain.storageservice.exceptionHandler.exceptions.FolderNotCreatedException;
 import org.brain.storageservice.exceptionHandler.exceptions.FolderNotDeletedException;
 import org.brain.storageservice.exceptionHandler.exceptions.FolderNotFoundException;
+import org.brain.storageservice.exceptionHandler.exceptions.FolderTaskNotFoundException;
 import org.brain.storageservice.model.Folder;
 import org.brain.storageservice.model.MoveFolderTask;
 import org.brain.storageservice.repository.FolderRepository;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -74,7 +76,6 @@ public class FolderServiceImpl implements FolderService {
         log.info("Folder deleted: " + folderId);
     }
 
-
     @Override
     public Folder renameFolder(Long folderId, String newFolderName, Long userId) {
         // check if folder with the same name already exists
@@ -90,12 +91,15 @@ public class FolderServiceImpl implements FolderService {
         return folder;
     }
 
-
     @Override
-    public MoveFolderTask getMoveFolderTask(String id) {
-        return folderTaskRepository.findById(id).orElseThrow(FolderNotFoundException::new);
+    public MoveFolderTask getMoveFolderTask(String taskId) {
+        return folderTaskRepository.findById(taskId).orElseThrow(FolderTaskNotFoundException::new);
     }
 
+    @Override
+    public List<MoveFolderTask> getAllMoveFolderTask(Long userId) {
+        return folderTaskRepository.findByUserId(userId);
+    }
 
     private Path getFullPathByFolderId(Long folderId) {
         StringBuilder path = new StringBuilder();
@@ -155,5 +159,4 @@ public class FolderServiceImpl implements FolderService {
             throw new FolderNotDeletedException(FOLDER_NOT_RENAMED_ERROR_MESSAGE + sourcePath);
         }
     }
-
 }

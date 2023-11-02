@@ -12,6 +12,7 @@ import org.brain.storageservice.service.MoveFolderProducer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -72,6 +73,13 @@ public class FolderController implements FolderApi {
 
     @Override
     public ResponseEntity<MoveFolderTask> getFolderTask(Long userId, String taskId){
+        log.info("getFolderTask - get MoveFolderTask");
         return ResponseEntity.ok(folderService.getMoveFolderTask(taskId));
+    }
+
+    @Override
+    public ResponseEntity<List<MoveFolderTask>> getAllFolderTask(Long userId) {
+        log.info("getAllFolderTask - get all MoveFolderTask");
+        return ResponseEntity.ok(folderService.getAllMoveFolderTask(userId));
     }
 }
