@@ -4,6 +4,8 @@ import org.brain.storageservice.exceptionHandler.exceptions.FolderNotFoundExcept
 import org.brain.storageservice.model.Folder;
 import org.brain.storageservice.model.MoveFolderTask;
 
+import java.util.List;
+
 public interface FolderService {
     /**
      * Create a folder in the file system and in the database
@@ -29,4 +31,10 @@ public interface FolderService {
     @Deprecated
     MoveFolderTask getMoveFolderTask(String id);
 
+    /**
+     * Get all MoveFolderTask by userId in Redis
+     * @param userId - id of the user
+     * @return List<MoveFolderTask> - list of MoveFolderTask
+     */
+    List<MoveFolderTask> getAllMoveFolderTask(Long userId);
 }

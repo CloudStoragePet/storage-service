@@ -1,6 +1,7 @@
 package org.brain.storageservice.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /*
  * This is the API for the folder service.
@@ -70,8 +73,15 @@ public interface FolderApi {
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {
                     @Content(schema = @Schema(implementation = MoveFolderTask.class), mediaType = "application/json")})})
-    @GetMapping(value = "/folder/{userId}")
+    @GetMapping(value = "/folder/task/{userId}/{taskId}")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<MoveFolderTask> getFolderTask(@PathVariable Long userId, @RequestParam String taskId);
+    ResponseEntity<MoveFolderTask> getFolderTask(@PathVariable Long userId, @PathVariable String taskId);
+    @Operation(summary = "Get all folder task")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = MoveFolderTask.class)), mediaType = "application/json")})})
+    @GetMapping(value = "/folder/task/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<List<MoveFolderTask>> getAllFolderTask(@PathVariable Long userId);
 
 }
