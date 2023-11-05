@@ -10,6 +10,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories(basePackages = "org.brain.storageservice.repository")
+//@EnableTransactionManagement
 public class RedisConfig {
 
     //    @Bean
@@ -32,7 +33,7 @@ public class RedisConfig {
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new JdkSerializationRedisSerializer());
         template.setValueSerializer(new JdkSerializationRedisSerializer());
-        template.setEnableTransactionSupport(true);
+        template.setEnableTransactionSupport(false);
         template.afterPropertiesSet();
         return template;
     }
