@@ -47,6 +47,17 @@ rabbitmq:
   exchange-name: ${RABBITMQ_EXCHANGE_NAME:storage-exchange}
   routing-key: ${RABBITMQ_ROUTING_KEY:storage-move-queue}
 
+## Monitoring
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
 ## Eureka
 eureka:
