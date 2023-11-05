@@ -1,6 +1,5 @@
 package org.brain.storageservice.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.brain.storageservice.config.BasePathProperties;
@@ -10,10 +9,12 @@ import org.brain.storageservice.exceptionHandler.exceptions.FolderNotFoundExcept
 import org.brain.storageservice.exceptionHandler.exceptions.FolderTaskNotFoundException;
 import org.brain.storageservice.model.Folder;
 import org.brain.storageservice.model.MoveFolderTask;
+import org.brain.storageservice.model.enums.MoveFolderTaskStatus;
 import org.brain.storageservice.repository.FolderRepository;
 import org.brain.storageservice.repository.FolderTaskRepository;
 import org.brain.storageservice.service.FolderService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +27,6 @@ import java.util.stream.Stream;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class FolderServiceImpl implements FolderService {
     private final FolderRepository folderRepository;
     private final FolderTaskRepository folderTaskRepository;
@@ -39,6 +39,7 @@ public class FolderServiceImpl implements FolderService {
 
 
     @Override
+    @Transactional
     public Folder createFolder(String folderName, Long parentFolderId, Long userId) {
         // get whole path by parent folder id
         log.info("Creating folder: " + folderName + " in parent folder with id: " + parentFolderId);
@@ -64,6 +65,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    @Transactional
     public void deleteFolder(Long folderId, Long userId) {
         // get whole path by folder id
         Path newPath = getFullPathByFolderId(folderId);
@@ -77,6 +79,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    @Transactional
     public Folder renameFolder(Long folderId, String newFolderName, Long userId) {
         // check if folder with the same name already exists
         if (checkIfFolderAlreadyExists(newFolderName, folderId)) {
@@ -101,6 +104,26 @@ public class FolderServiceImpl implements FolderService {
         return folderTaskRepository.findByUserId(userId);
     }
 
+    @Override
+    public MoveFolderTask cancelMoveFolderTask(String taskId) {
+        // cancel and return canceled task
+        MoveFolderTask moveFolderTask = folderTaskRepository.findById(taskId).orElseThrow(FolderTaskNotFoundException::new);
+        moveFolderTask.setStatus(MoveFolderTaskStatus.CANCELED);
+        return folderTaskRepository.save(moveFolderTask);
+    }
+
+    @Override
+    public MoveFolderTask stopMoveFolderTask(String taskId) {
+        MoveFolderTask moveFolderTask = folderTaskRepository.findById(taskId).orElseThrow(FolderTaskNotFoundException::new);
+        moveFolderTask.setStatus(MoveFolderTaskStatus.STOPPED);
+        return folderTaskRepository.save(moveFolderTask);
+    }
+    @Override
+    public MoveFolderTask resumeMoveFolderTask(String taskId) {
+        MoveFolderTask moveFolderTask = folderTaskRepository.findById(taskId).orElseThrow(FolderTaskNotFoundException::new);
+        moveFolderTask.setStatus(MoveFolderTaskStatus.IN_PROGRESS);
+        return folderTaskRepository.save(moveFolderTask);
+    }
     private Path getFullPathByFolderId(Long folderId) {
         StringBuilder path = new StringBuilder();
         while (folderId != null) {

@@ -21,6 +21,7 @@ import java.util.UUID;
 public class FolderController implements FolderApi {
     private final FolderService folderService;
     private final MoveFolderProducer moveFolderProducer;
+
     // todo check if folders are owned by userId
     @Override
     public ResponseEntity<FolderResponse> baseFolder(Long userId) {
@@ -31,7 +32,7 @@ public class FolderController implements FolderApi {
     }
 
     @Override
-    public ResponseEntity<FolderResponse> nestedFolder(Long userId, FolderRequest folderRequest)  {
+    public ResponseEntity<FolderResponse> nestedFolder(Long userId, FolderRequest folderRequest) {
         log.info("new folder creation {}", folderRequest);
         // todo check if parent folder exists with userId
         folderService.createFolder(folderRequest.getName(), folderRequest.getParentFolderId(), userId);
@@ -54,7 +55,8 @@ public class FolderController implements FolderApi {
         // todo check if folder exists with userId
         folderService.renameFolder(folderRequest.getId(), folderRequest.getName(), userId);
         log.info("folder renamed {}", folderRequest);
-        return ResponseEntity.ok().build();    }
+        return ResponseEntity.ok().build();
+    }
 
     @Override
     public ResponseEntity<MoveFolderTask> moveFolder(Long userId, MoveFolderRequest moveFolderRequest) {
@@ -72,7 +74,7 @@ public class FolderController implements FolderApi {
     }
 
     @Override
-    public ResponseEntity<MoveFolderTask> getFolderTask(Long userId, String taskId){
+    public ResponseEntity<MoveFolderTask> getFolderTask(Long userId, String taskId) {
         log.info("getFolderTask - get MoveFolderTask");
         return ResponseEntity.ok(folderService.getMoveFolderTask(taskId));
     }
@@ -81,5 +83,22 @@ public class FolderController implements FolderApi {
     public ResponseEntity<List<MoveFolderTask>> getAllFolderTask(Long userId) {
         log.info("getAllFolderTask - get all MoveFolderTask");
         return ResponseEntity.ok(folderService.getAllMoveFolderTask(userId));
+    }
+
+    @Override
+    public ResponseEntity<MoveFolderTask> cancelFolderTask(Long userId, String taskId) {
+        log.info("cancelFolderTask - cancel {} ", taskId);
+        return ResponseEntity.ok(folderService.cancelMoveFolderTask(taskId));
+    }
+
+    @Override
+    public ResponseEntity<MoveFolderTask> stopFolderTask(Long userId, String taskId) {
+        log.info("stopFolderTask - stop {} ", taskId);
+        return ResponseEntity.ok(folderService.stopMoveFolderTask(taskId));
+    }
+    @Override
+    public ResponseEntity<MoveFolderTask> resumeFolderTask(Long userId, String taskId) {
+        log.info("stopFolderTask - stop {} ", taskId);
+        return ResponseEntity.ok(folderService.resumeMoveFolderTask(taskId));
     }
 }

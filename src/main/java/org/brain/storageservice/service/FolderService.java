@@ -37,4 +37,10 @@ public interface FolderService {
      * @return List<MoveFolderTask> - list of MoveFolderTask
      */
     List<MoveFolderTask> getAllMoveFolderTask(Long userId);
+
+    MoveFolderTask cancelMoveFolderTask(String taskId);
+
+    MoveFolderTask stopMoveFolderTask(String taskId);
+
+    MoveFolderTask resumeMoveFolderTask(String taskId);
 }

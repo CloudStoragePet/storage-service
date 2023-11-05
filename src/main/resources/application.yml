@@ -56,4 +56,5 @@ eureka:
       defaultZone: ${EUREKA_URL:http://eureka-server:8761/eureka}
     fetch-registry: true
     register-with-eureka: true
-
+  instance:
+    prefer-ip-address: true

@@ -83,5 +83,27 @@ public interface FolderApi {
     @GetMapping(value = "/folder/task/{userId}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<List<MoveFolderTask>> getAllFolderTask(@PathVariable Long userId);
+    @Operation(summary = "Cancel folder task")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = MoveFolderTask.class)), mediaType = "application/json")})})
+    @PutMapping(value = "/folder/task/{userId}/{taskId}/cancel")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<MoveFolderTask> cancelFolderTask(@PathVariable Long userId, @PathVariable String taskId);
+
+    @Operation(summary = "Stop folder task")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = MoveFolderTask.class)), mediaType = "application/json")})})
+    @PutMapping(value = "/folder/task/{userId}/{taskId}/stop")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<MoveFolderTask> stopFolderTask(@PathVariable Long userId, @PathVariable String taskId);
+    @Operation(summary = "Resume folder task")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = MoveFolderTask.class)), mediaType = "application/json")})})
+    @PutMapping(value = "/folder/task/{userId}/{taskId}/resume")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<MoveFolderTask> resumeFolderTask(@PathVariable Long userId, @PathVariable String taskId);
 
 }
