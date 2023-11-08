@@ -13,6 +13,7 @@ import org.brain.storageservice.model.enums.MoveFolderTaskStatus;
 import org.brain.storageservice.repository.FolderRepository;
 import org.brain.storageservice.repository.FolderTaskRepository;
 import org.brain.storageservice.service.FolderService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,7 +102,8 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public List<MoveFolderTask> getAllMoveFolderTask(Long userId) {
-        return folderTaskRepository.findByUserId(userId);
+        // get and sort tasks by status IN_PROGRESS -> STOPPED -> CANCELED
+        return folderTaskRepository.findByUserIdOrderByStatusAsc(userId, Sort.by("status").ascending());
     }
 
     @Override
