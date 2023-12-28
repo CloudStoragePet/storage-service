@@ -82,11 +82,11 @@
             <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
-        <!--RabbitMq-->
+        <!--Kafka-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>3.1.5</version>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>3.1.1</version>
         </dependency>
         <!--Redis + Jedis-->
         <dependency>

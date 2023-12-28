@@ -15,11 +15,11 @@ spring:
   flyway:
     enabled: true
   ## RabbitMQ config
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    username: guest
-    password: guest
+#  rabbitmq:
+#    host: rabbitmq
+#    port: 5672
+#    username: guest
+#    password: guest
   ## redis config
   data:
     redis:
@@ -27,6 +27,13 @@ spring:
       port: 6379
       password: 1085
 #      url: redis://redis:6379
+  ## Kafka config
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    topicName: ${KAFKA_TOPIC_NAME:storage-service}
+    streams:
+      replication-factor: ${KAFKA_REPLICATION_FACTOR:1}
+
 
 ## OpenApi config
 springdoc:
@@ -39,11 +46,6 @@ springdoc:
 storage:
   path: ${STORAGE_BASE_PATH:/home/vitalii/Projects/CloudApp/storage-service/storage}
 
-## RabbitMQ config
-rabbitmq:
-  move-queue-name: ${RABBITMQ_MOVE_QUEUE_NAME:storage-move-queue}
-  exchange-name: ${RABBITMQ_EXCHANGE_NAME:storage-exchange}
-  routing-key: ${RABBITMQ_ROUTING_KEY:storage-move-queue}
 
 ## Monitoring
 management:
